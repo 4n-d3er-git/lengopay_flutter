@@ -5,3 +5,5 @@ export 'src/models/payment_response.dart';
 export 'src/models/payment_request.dart';
 export 'src/models/callback_details.dart';
 export 'src/exceptions/lengopay_exception.dart';
+export 'src/models/transaction_status_request.dart';
+export 'src/models/transaction_status_response.dart';

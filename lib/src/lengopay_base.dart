@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:lengopay_flutter/src/models/transaction_status_request.dart';
+import 'package:lengopay_flutter/src/models/transaction_status_response.dart';
 import 'constants/api_constants.dart';
 import 'models/payment_request.dart';
 import 'models/payment_response.dart';
@@ -39,6 +41,32 @@ class LengopayFlutter {
 
       if (response.statusCode == 200) {
         return PaymentResponse.fromJson(jsonDecode(response.body));
+      }
+
+      throw LengopayException(
+        'Erreur lors de la requête',
+        statusCode: response.statusCode,
+      );
+    } catch (e) {
+      if (e is LengopayException) rethrow;
+      throw LengopayException('Une erreur inattendue est survenue: $e');
+    }
+  }
+
+  Future<TransactionStatusResponse> transactionStatus(
+      TransactionStatusRequest transactionRequest) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/transaction/status'),
+        headers: {
+          ...ApiConstants.headers,
+          'Authorization': 'Basic $licenseKey',
+        },
+        body: jsonEncode(transactionRequest.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        return TransactionStatusResponse.fromJson(jsonDecode(response.body));
       }
 
       throw LengopayException(

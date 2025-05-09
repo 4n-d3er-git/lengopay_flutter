@@ -26,6 +26,8 @@ Fonctionnalités
 *   **Gestion des callbacks** : Recevez les notifications sur le statut des paiements.
     
 *   **Support multi-devises** : Accepte plusieurs devises comme GNF, XOF, USD, etc.
+
+*   **Vérification du statut de paiement** : Vérifiez les statuts de vos transactions.
     
 
 Installation
@@ -39,7 +41,7 @@ Ou ajoutez-le manuellement dans le fichier pubspec.yaml :
 
 ```
 dependencies:
-  lengopay_flutter: ^1.1.2
+  lengopay_flutter: ^1.2.0
 ```
 
 Puis, installez les dépendances avec :
@@ -156,8 +158,6 @@ Les contributions sont les bienvenues ! Suivez ces étapes pour contribuer :
 
 Roadmap
 -------
-
-*   Statut d'un paiement
 
 *  Historique des transactions
     

@@ -12,7 +12,7 @@ class LengoPayApp extends StatefulWidget {
 }
 
 class _LengoPayAppState extends State<LengoPayApp> {
-  String output = 'Cliquez sur le bouton pour tester le paiement.';
+  String output = 'Cliquez sur le bouton pour tester.';
 
   Future<void> testPayment() async {
     // Initialisation du service Lengopay avec votre clé de licence
@@ -32,7 +32,7 @@ class _LengoPayAppState extends State<LengoPayApp> {
         PaymentRequest(
           websiteId: 'VOTRE_WEBSITE_ID',
           // L'identifiant unique de votre site
-          amount: 1500,
+          amount: 2000,
           // Montant du paiement
           currency: 'GNF',
           // Devise utilisée "GNF", "XOF" ou "USD"
@@ -49,11 +49,57 @@ class _LengoPayAppState extends State<LengoPayApp> {
               URL de paiement: ${paymentResponse.paymentUrl}
         ''';
       });
-
       // Vous pouvez remplacer log par print selon vos bésoins.
       log('Status: ${paymentResponse.status}');
       log('Pay ID: ${paymentResponse.payId}');
       log('URL de paiement: ${paymentResponse.paymentUrl}');
+    } on LengopayException catch (e) {
+      log('Erreur Lengopay: ${e.toString()}');
+      setState(() {
+        output = 'Erreur Lengopay: ${e.toString()}';
+      });
+    } catch (e) {
+      setState(() {
+        output = 'Erreur inattendue: ${e.toString()}';
+      });
+      log('Erreur inattendue: ${e.toString()}');
+    }
+  }
+
+  Future<void> testTransactionStatus() async {
+    // Initialisation du service Lengopay avec votre clé de licence
+    final lengopay = LengopayFlutter(
+      // Clé de licence obtenue sur votre compte Lengopay
+      licenseKey: 'VOTRE_LICENSE_KEY',
+
+      // Par defaut le package utilise l'url de test: 'https://sandbox.lengopay.com/api/v1'
+      // vous pouvez utiliser l'URL de production
+      // ici 👇👇
+      // baseUrl:
+    );
+
+    try {
+      final transactionResponse = await lengopay.transactionStatus(
+        TransactionStatusRequest(
+          payId: 'VOTRE_PAY_ID',
+          websiteId: "VOTRE_WEBSITE_ID",
+          // L'identifiant unique de votre site
+        ),
+      );
+      setState(() {
+        output = '''
+              Status: ${transactionResponse.status}
+              Pay ID: ${transactionResponse.payId}
+              Date: ${transactionResponse.date}
+              Montant: ${transactionResponse.amount}
+        ''';
+      });
+
+      // Vous pouvez remplacer log par print selon vos bésoins.
+      log('Status: ${transactionResponse.status}');
+      log('Pay ID: ${transactionResponse.payId}');
+      log('Date: ${transactionResponse.date}');
+      log('Montant: ${transactionResponse.amount}');
     } on LengopayException catch (e) {
       log('Erreur Lengopay: ${e.toString()}');
       setState(() {
@@ -85,6 +131,15 @@ class _LengoPayAppState extends State<LengoPayApp> {
                 textColor: Colors.white,
                 onPressed: testPayment,
                 child: Text('Tester le payement'),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              MaterialButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                onPressed: testTransactionStatus,
+                child: Text('Tester le statut de transaction'),
               ),
               SizedBox(
                 height: 10,

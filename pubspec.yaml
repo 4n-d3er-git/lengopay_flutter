@@ -1,6 +1,6 @@
 name: lengopay_flutter
 description: "Un package Flutter pour l'intégration de l'API de paiement Lengo Pay."
-version: 1.1.2
+version: 1.2.0
 homepage: https://github.com/4n-d3er-git/lengopay_flutter/blob/main/README.md
 repository: https://github.com/4n-d3er-git/lengopay_flutter
 issue_tracker: https://github.com/4n-d3er-git/lengopay_flutter/issues
